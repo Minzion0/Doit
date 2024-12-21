@@ -1,2 +1,11 @@
 server:
   port: 8087
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/Doit
+    name: root
+    password: 8338
+  jpa:
+    hibernate:
+      ddl-auto: create
