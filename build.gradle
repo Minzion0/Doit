@@ -24,6 +24,14 @@ repositories {
 }
 
 dependencies {
+    //JPA
+    implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '3.4.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '3.3.2'
+
+    //Mariadb
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.3.3'
+
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
