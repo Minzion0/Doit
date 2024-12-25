@@ -1,11 +1,14 @@
 package com.zino.doit.domain.controller.board;
 
 import com.zino.doit.domain.model.board.dto.BoardDTO.PostBoard;
+import com.zino.doit.domain.model.board.vo.BoardVO;
 import com.zino.doit.domain.service.board.BoardService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +30,12 @@ public class BoardController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @GetMapping("/doit")
+  public ResponseEntity<?>boardList(){
+    List<BoardVO.BoardList>result = boardService.boardList();
+
+    return ResponseEntity.ok(result);
   }
 }
