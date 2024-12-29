@@ -9,4 +9,5 @@ public interface BoardService {
 
   public void postBoard(PostBoard request)throws IllegalAccessException;
   public List<BoardVO.BoardList> boardList();
+  public BoardVO boardDetail(Long boardId);
 }

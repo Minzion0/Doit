@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Table
@@ -17,23 +18,27 @@ public class BoardEntity extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
+  @Column(nullable = false,updatable = false)
+  private String writer;
   @Column(nullable = false)
   private String title;
   @Column(nullable = false)
   private String content;
 
+  @Setter
   private Long viewCount;
 
   public BoardEntity() {}
-  private BoardEntity(String title, String content) {
+  private BoardEntity(String writer,String title, String content) {
+    this.writer=writer;
     this.title = title;
     this.content = content;
     this.viewCount = 0L;
   }
   /*펙토리 메소드*/
-  public static BoardEntity of(String title,String content){
-    return new BoardEntity(title,content);
+  public static BoardEntity of(String writer,String title,String content){
+    return new BoardEntity(writer,title,content);
   }
+
 
 }
