@@ -8,8 +8,8 @@ import com.zino.doit.domain.repository.board.BoardRepository;
 import com.zino.doit.domain.service.board.BoardService;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,14 +20,14 @@ public class BoardServiceImpl implements BoardService {
 
   @Override
   @Transactional(rollbackOn = Exception.class)
-  public void postBoard(PostBoard request)throws IllegalAccessException {
+  public void postBoard(PostBoard request) throws IllegalAccessException {
 
     BoardEntity boardEntity =
-        BoardEntity.of(request.getTitle(), request.getContent());
+        BoardEntity.of(request.getTitle(),request.getWriter() ,request.getContent());
 
     boardRepository.save(boardEntity);
 
-    if (boardEntity.getId()==null){
+    if (boardEntity.getId() == null) {
       throw new IllegalAccessException();
     }
 
@@ -37,14 +37,28 @@ public class BoardServiceImpl implements BoardService {
   public List<BoardList> boardList() {
     List<BoardEntity> boardList =
         boardRepository.findAll();
-    List<BoardList>result = boardList.stream().map(entity->
+    return boardList.stream().map(entity ->
         BoardVO.BoardList.of(
             entity.getId(),
+            entity.getWriter(),
             entity.getTitle(),
             entity.getViewCount(),
             entity.getCreatedAt()
         )).toList();
-    return result;
+
+  }
+
+  @Override
+  @Transactional(rollbackOn = Exception.class)
+  public BoardVO boardDetail(Long boardId) {
+    BoardEntity boardEntity = boardRepository.findById(boardId).orElseThrow(
+        IllegalArgumentException::new
+    );
+
+    boardEntity.setViewCount(boardEntity.getViewCount()+1);
+
+    return BoardVO.of(boardEntity);
+
   }
 
 
