@@ -20,8 +20,11 @@ public class BoardEntity extends BaseEntity {
   private Long id;
   @Column(nullable = false,updatable = false)
   private String writer;
+  @Setter
   @Column(nullable = false)
   private String title;
+
+  @Setter
   @Column(nullable = false)
   private String content;
 

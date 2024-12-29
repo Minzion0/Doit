@@ -1,5 +1,6 @@
 package com.zino.doit.domain.controller.board;
 
+import com.zino.doit.domain.model.board.dto.BoardDTO.DeleteBoard;
 import com.zino.doit.domain.model.board.dto.BoardDTO.PostBoard;
 import com.zino.doit.domain.model.board.vo.BoardVO;
 import com.zino.doit.domain.service.board.BoardService;
@@ -8,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,5 +48,26 @@ public class BoardController {
     BoardVO result = boardService.boardDetail(boardId);
 
     return ResponseEntity.ok(result);
+  }
+  @PatchMapping("/doit/{boardId}")
+  public ResponseEntity<?> boardModify(@PathVariable Long boardId,@RequestBody PostBoard request){
+    try{
+      boardService.boardModify(boardId,request);
+    }catch (Exception e){
+      log.error(e.getMessage());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+    return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @DeleteMapping("/doit/{boardId}")
+  public ResponseEntity<?> boardDelete(@PathVariable Long boardId,@RequestBody DeleteBoard request){
+    try{
+      boardService.deleteBoard(boardId,request);
+    }catch (Exception e){
+      log.error(e.getMessage());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+    return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 }

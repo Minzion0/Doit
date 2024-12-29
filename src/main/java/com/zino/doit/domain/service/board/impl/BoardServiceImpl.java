@@ -1,6 +1,7 @@
 package com.zino.doit.domain.service.board.impl;
 
 import com.zino.doit.domain.entity.board.BoardEntity;
+import com.zino.doit.domain.model.board.dto.BoardDTO.DeleteBoard;
 import com.zino.doit.domain.model.board.dto.BoardDTO.PostBoard;
 import com.zino.doit.domain.model.board.vo.BoardVO;
 import com.zino.doit.domain.model.board.vo.BoardVO.BoardList;
@@ -58,6 +59,31 @@ public class BoardServiceImpl implements BoardService {
     boardEntity.setViewCount(boardEntity.getViewCount()+1);
 
     return BoardVO.of(boardEntity);
+
+  }
+  /*
+  doit의 경우 db 부하를 최대한 줄이기위해 게시물 내용 변경이 있는지 확인하고 변경이 있으면 updated를 하기로 한다.
+  */
+  @Override
+  @Transactional(rollbackOn = Exception.class)
+  public void boardModify(Long boardId, PostBoard request)throws Exception {
+    BoardEntity boardEntity = boardRepository.findByIdAndWriter(boardId, request.getWriter())
+        .orElseThrow(NotFoundException::new);
+
+    if (!boardEntity.getTitle().equals(request.getTitle())){
+      boardEntity.setTitle(request.getTitle());
+    }
+    if(!boardEntity.getContent().equals(request.getContent())){
+      boardEntity.setContent(request.getContent());
+    }
+
+  }
+
+  @Override
+  @Transactional(rollbackOn = Exception.class)
+  public void deleteBoard(Long boardId, DeleteBoard request) {
+
+    boardRepository.deleteByIdAndWriter(boardId, request.getWriter());
 
   }
 

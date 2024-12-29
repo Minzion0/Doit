@@ -10,4 +10,9 @@ public class BoardDTO {
     private String writer;
     private String content;
   }
+  @Data
+  public static class DeleteBoard{
+    private String writer;
+  }
+
 }
