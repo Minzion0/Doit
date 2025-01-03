@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
-  Optional<BoardEntity> findByIdAndWriter(Long id, String writer);
+  Optional<BoardEntity> findByIdAndWriter_Id(Long id, Long userId);
 
   @Modifying
-  void deleteByIdAndWriter(Long id, String writer);
+  void deleteByIdAndWriter_Id(Long id, Long userId);
+
 }

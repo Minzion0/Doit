@@ -1,11 +1,13 @@
 package com.zino.doit.domain.service.board.impl;
 
 import com.zino.doit.domain.entity.board.BoardEntity;
+import com.zino.doit.domain.entity.board.UserEntity;
 import com.zino.doit.domain.model.board.dto.BoardDTO.DeleteBoard;
 import com.zino.doit.domain.model.board.dto.BoardDTO.PostBoard;
 import com.zino.doit.domain.model.board.vo.BoardVO;
 import com.zino.doit.domain.model.board.vo.BoardVO.BoardList;
 import com.zino.doit.domain.repository.board.BoardRepository;
+import com.zino.doit.domain.repository.board.UserRepository;
 import com.zino.doit.domain.service.board.BoardService;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -18,13 +20,17 @@ import org.springframework.stereotype.Service;
 public class BoardServiceImpl implements BoardService {
 
   private final BoardRepository boardRepository;
+  private final UserRepository userRepository;
 
   @Override
   @Transactional(rollbackOn = Exception.class)
   public void postBoard(PostBoard request) throws IllegalAccessException {
+    UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(
+            ()->new IllegalAccessException()
+    );
 
     BoardEntity boardEntity =
-        BoardEntity.of(request.getTitle(),request.getWriter() ,request.getContent());
+        BoardEntity.of(user,request.getTitle() ,request.getContent());
 
     boardRepository.save(boardEntity);
 
@@ -41,7 +47,8 @@ public class BoardServiceImpl implements BoardService {
     return boardList.stream().map(entity ->
         BoardVO.BoardList.of(
             entity.getId(),
-            entity.getWriter(),
+            entity.getWriter().getId(),
+            entity.getWriter().getNickname(),
             entity.getTitle(),
             entity.getViewCount(),
             entity.getCreatedAt()
@@ -67,7 +74,9 @@ public class BoardServiceImpl implements BoardService {
   @Override
   @Transactional(rollbackOn = Exception.class)
   public void boardModify(Long boardId, PostBoard request)throws Exception {
-    BoardEntity boardEntity = boardRepository.findByIdAndWriter(boardId, request.getWriter())
+    UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(() -> new IllegalAccessException());
+
+    BoardEntity boardEntity = boardRepository.findByIdAndWriter_Id(boardId, user.getId())
         .orElseThrow(NotFoundException::new);
 
     if (!boardEntity.getTitle().equals(request.getTitle())){
@@ -82,8 +91,8 @@ public class BoardServiceImpl implements BoardService {
   @Override
   @Transactional(rollbackOn = Exception.class)
   public void deleteBoard(Long boardId, DeleteBoard request) {
-
-    boardRepository.deleteByIdAndWriter(boardId, request.getWriter());
+    UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(() -> new IllegalArgumentException());
+    boardRepository.deleteByIdAndWriter_Id(boardId, user.getId());
 
   }
 
