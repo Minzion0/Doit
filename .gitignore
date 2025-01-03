@@ -35,4 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
-/src/main/resources/application-dev.yaml
+
+# Ignore application-dev.yaml
+application-dev.yaml
