@@ -1,5 +1,6 @@
 package com.zino.doit.domain.entity.board;
 
+import com.zino.doit.domain.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

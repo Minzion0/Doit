@@ -1,13 +1,13 @@
 package com.zino.doit.domain.service.board.impl;
 
 import com.zino.doit.domain.entity.board.BoardEntity;
-import com.zino.doit.domain.entity.board.UserEntity;
+import com.zino.doit.domain.entity.UserEntity;
 import com.zino.doit.domain.model.board.dto.BoardDTO.DeleteBoard;
 import com.zino.doit.domain.model.board.dto.BoardDTO.PostBoard;
 import com.zino.doit.domain.model.board.vo.BoardVO;
 import com.zino.doit.domain.model.board.vo.BoardVO.BoardList;
 import com.zino.doit.domain.repository.board.BoardRepository;
-import com.zino.doit.domain.repository.board.UserRepository;
+import com.zino.doit.domain.repository.UserRepository;
 import com.zino.doit.domain.service.board.BoardService;
 import jakarta.transaction.Transactional;
 import java.util.List;

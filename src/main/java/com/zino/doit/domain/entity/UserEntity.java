@@ -1,5 +1,7 @@
-package com.zino.doit.domain.entity.board;
+package com.zino.doit.domain.entity;
 
+import com.zino.doit.domain.entity.board.BaseEntity;
+import com.zino.doit.domain.entity.board.BoardEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -10,7 +12,7 @@ import java.util.List;
 @ToString
 @Table
 @Entity(name = "User")
-public class UserEntity extends BaseEntity{
+public class UserEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
